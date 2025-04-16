@@ -1,4 +1,6 @@
 const axios = require("axios");
+const fs = require('fs');
+const FormData = require('form-data');
 
 // Configuration object
 const config = {
@@ -23,6 +25,24 @@ const apiClient = axios.create({
   baseURL: config.baseUrl
 });
 
+async function attachImageToCard(cardId, imagePath) {
+  try {
+    const form = new FormData();
+    form.append('key', config.key);
+    form.append('token', config.token);
+    form.append('file', fs.createReadStream(imagePath));
+
+    const response = await apiClient.post(`/cards/${cardId}/attachments`, form, {
+      headers: form.getHeaders(),
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error attaching image to card:", error.response?.data || error.message);
+    throw error;
+  }
+}
+
 async function createCard(cardData) {
   try {
     const idList = cardData.idList || 
@@ -43,12 +63,20 @@ async function createCard(cardData) {
     if (cardData.labels) payload.idLabels = cardData.labels.join(',');
     
     const response = await apiClient.post('/cards', payload);
-    return response.data;
+    const card = response.data;
+
+    // Attach image if provided
+    if (cardData.imagePath) {
+      await attachImageToCard(card.id, cardData.imagePath);
+    }
+
+    return card;
   } catch (error) {
     console.error("Error creating Trello card:", error.response?.data || error.message);
     throw error;
   }
 }
+
 async function getLists(boardId = config.boardId) {
   try {
     const response = await apiClient.get(`/boards/${boardId}/lists`, {
@@ -107,7 +135,7 @@ async function logIssue(issue) {
         description += `- **${key}**: ${value}\n`;
       });
     }
-    
+   
     return await createCard({
       name: issue.title,
       desc: description,
@@ -126,3 +154,4 @@ module.exports = {
   addAttachment,
   logIssue
 };
+// token ATTA418da370b947f6a54b548c6714207136ea518344dfcdd61a1a5b5f2d0a26348d04889B21
