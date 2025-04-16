@@ -9,7 +9,8 @@ const cors = require("cors");
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use("/",validateWhatsAppMessage, webhook);
+
+app.use("/", webhook);
 app.use("/", message);
 
 app.listen(3000, () => {

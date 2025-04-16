@@ -3,6 +3,7 @@ const Router = express.Router();
 const whatsAppService = require("../services/whatsappService");
 const {createCard} = require("../services/trelloService");
 const {sendIssueAcknowledgment, sendAcknowledgment} = require("../utils/aknowledgement");
+const validateWhatsAppMessage = require("../middlewares/validateWhatsappMessage");
 // Constants
 const VERIFY_TOKEN = "secret_token";
 // Verify Webhook (GET)
@@ -83,7 +84,7 @@ async function handleNfmReply(from, nfmReply) {
 }
 
 // Handle webhook events (POST)
-Router.post('/webhook', async (req, res) => {
+Router.post('/webhook', validateWhatsAppMessage, async (req, res) => {
     const body = req.body;
 
 
