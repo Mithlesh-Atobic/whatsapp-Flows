@@ -2,8 +2,8 @@ const axios = require("axios");
 
 // Configuration object
 const config = {
-  key: process.env.TRELLO_KEY || "b355224e39f8607b69e94fae831d3c38",
-  token: process.env.TRELLO_TOKEN || "ATTA50aa38866e2b46ab729480a97ad2808abeb797fc7821e806a5e9fda7e9ab8351420B4F0D",
+  key: process.env.TRELLO_KEY,
+  token: process.env.TRELLO_TOKEN ,
   baseUrl: "https://api.trello.com/1",
   boardId: "67fde2d4b58ea6fe5796fe37",
   listIds: {
