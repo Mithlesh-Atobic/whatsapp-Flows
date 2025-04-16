@@ -1,4 +1,7 @@
 function validateWhatsAppMessage(req, res, next) {
+    if(!req.body) {
+        return res.sendStatus(200);
+    }
     const body = req.body;
 
     const isValid =
