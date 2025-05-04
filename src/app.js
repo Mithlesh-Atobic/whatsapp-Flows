@@ -4,6 +4,9 @@ const cors = require("cors");
 const whatsappWebhook = require("./routes/whatsappWebhook");
 const message = require("./routes/message");
 const trelloWebhook = require("./routes/trelloWebhook")
+const axios = require('axios');
+const fs = require('fs');
+const path = require('path');
 
 const app = express();
 app.use(cors());
@@ -21,4 +24,4 @@ app.listen(3000, () => {
   }); 
 
 
-  
+   
