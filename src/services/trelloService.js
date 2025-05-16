@@ -7,12 +7,12 @@ const config = {
   key: process.env.TRELLO_KEY,
   token: process.env.TRELLO_TOKEN ,
   baseUrl: "https://api.trello.com/1",
-  boardId: "681499b5b95209fa57e3c224",
+  boardId: "6826d5913cc4456328f5848d",
   listIds: {
-    "road_damage": "681499b5b95209fa57e3c220",
-    "water_supply": "681499b5b95209fa57e3c221",
+    "road_damage": "6826d5913cc4456328f58489",
+    "water_supply": "6826d5913cc4456328f5848a",
     "education": "67fde964ed057e757b05aa32",
-    "electricity_issue": "681499b5b95209fa57e3c222",
+    "electricity_issue": "6826d5913cc4456328f5848b",
   },
   subcategories: {
     "road_damage": "Road Damage Complaint",
@@ -39,7 +39,7 @@ async function attachImageToCard(cardId, imagePath) {
     return response.data;
   } catch (error) {
     console.error("Error attaching image to card:", error.response?.data || error.message);
-    throw error;
+    
   }
 }
 
@@ -49,7 +49,7 @@ async function createCard(cardData) {
                    (cardData.category ? config.listIds[cardData.category] : config.listIds.education);
     
     if (!idList) {
-      throw new Error("No valid list ID provided or found for category");
+      return;
     }
     
     const payload = {
@@ -72,7 +72,7 @@ async function createCard(cardData) {
     return card;
   } catch (error) {
     console.error("Error creating Trello card:", error.response?.data || error.message);
-    throw error;
+ 
   }
 }
 
@@ -87,7 +87,6 @@ async function getLists(boardId = config.boardId) {
     return response.data;
   } catch (error) {
     console.error("Error fetching Trello lists:", error.response?.data || error.message);
-    throw error;
   }
 }
 async function getCardComments(cardId) {
@@ -165,7 +164,6 @@ async function addAttachment(cardId, url, name) {
     return response.data;
   } catch (error) {
     console.error("Error adding attachment to Trello card:", error.response?.data || error.message);
-    throw error;
   }
 } 
 async function logIssue(issue) {
@@ -188,7 +186,6 @@ async function logIssue(issue) {
     });
   } catch (error) {
     console.error("Error logging issue to Trello:", error);
-    throw error;
   }
 }
 
